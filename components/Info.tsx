@@ -1,11 +1,18 @@
 "use client";
 
+import useCart from "@/hooks/use-cart";
 import { Product } from "@/types";
 import { ShoppingCart } from "lucide-react";
+import { MouseEventHandler } from "react";
 import Button from "./ui/Button";
 import Currency from "./ui/Currency";
 
 const Info = ({ data }: { data: Product }) => {
+  const cart = useCart();
+  const onAddToCart: MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.stopPropagation();
+    cart.addItem(data);
+  };
   return (
     <div>
       <h1 className="text-3xl font-bold text-gray-900">{data.name}</h1>
@@ -24,11 +31,12 @@ const Info = ({ data }: { data: Product }) => {
           <h3 className="font-semibold text-black">Color:</h3>
           <div
             className="h-6 w-6 rounded-full border border-gray-500"
-            style={{ backgroundColor: data?.color?.value }} />
+            style={{ backgroundColor: data?.color?.value }}
+          />
         </div>
       </div>
       <div className="mt-10 flex items-center gap-x-3">
-        <Button className="flex items-center gap-x-2">
+        <Button className="flex items-center gap-x-2" onClick={onAddToCart}>
           Add To Cart
           <ShoppingCart />
         </Button>
